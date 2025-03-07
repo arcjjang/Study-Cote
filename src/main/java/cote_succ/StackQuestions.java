@@ -6,7 +6,7 @@ import java.util.Stack;
 
 public interface StackQuestions {
 
-  class stackQuestionMain06_2 {
+  class StackQuestionMain06_2 {
     public static void main(String[] args) {
       Stack<Integer> stack = new Stack<>();   // 스택 객체 생성
       // 스택에 데이터 푸시
@@ -36,7 +36,7 @@ public interface StackQuestions {
     }
   }
 
-  class stackQuestionMain06_3_8 {
+  class StackQuestionMain06_3_8 {
     public static void main(String[] args) {
       String s1 = "()()";
       boolean result1 = solution(s1);
@@ -88,7 +88,7 @@ public interface StackQuestions {
 
   }
 
-  class stackQuestionMain06_3_9 {
+  class StackQuestionMain06_3_9 {
     public static void main(String[] args) {
       // 10 -> 1010
       // 27 -> 11011
@@ -138,7 +138,7 @@ public interface StackQuestions {
 
   }
 
-  class stackQuestionMain06_3_10 {
+  class StackQuestionMain06_3_10 {
     public static void main(String[] args) {
       String s1 = "[](){}";
       int result1 = solution(s1);
@@ -254,7 +254,7 @@ public interface StackQuestions {
     }
   }
 
-  class stackQuestionMain06_3_11 {
+  class StackQuestionMain06_3_11 {
     public static void main(String[] args) {
       String s = "baabaa";
       int result1 = mySolution(s);
@@ -298,7 +298,7 @@ public interface StackQuestions {
 
   }
 
-  class stackQuestionMain06_3_13 {
+  class StackQuestionMain06_3_13 {
     public static void main(String[] args) {
       int[][] board = {
         {0, 0, 0, 0, 0},

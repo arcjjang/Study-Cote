@@ -4,7 +4,7 @@ import java.util.*;
 
 public interface QueueQuestions {
 
-    class queueQuestionMain07_1 {
+    class QueueQuestionMain07_1 {
         public static void main(String[] args) {
             // 큐를 구현한 ArrayDeque 객체 생성
             Queue<Integer> queue = new ArrayDeque<>();
@@ -47,7 +47,7 @@ public interface QueueQuestions {
         }
     }
 
-    class queueQuestionMain07_2 {
+    class QueueQuestionMain07_2 {
         public static void main(String[] args) {
             int N = 5;
             int K = 2;
@@ -92,7 +92,7 @@ public interface QueueQuestions {
         }
     }
 
-    class queueQuestionMain07_3 {
+    class QueueQuestionMain07_3 {
         public static void main(String[] args) {
             int[] progresses = {93, 30, 55};
             int[] speeds = {1, 30, 5};
@@ -175,7 +175,7 @@ public interface QueueQuestions {
         }
     }
 
-    class queueQuestionMain07_4 {
+    class QueueQuestionMain07_4 {
         public static void main(String[] args) {
             String[] cards1 = {"i", "drink", "water"};
             String[] cards2 = {"want", "to"};
