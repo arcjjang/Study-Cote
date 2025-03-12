@@ -1,6 +1,7 @@
 package cote_succ;
 
 import java.util.*;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public interface HashQuestions {
@@ -445,5 +446,170 @@ public interface HashQuestions {
 
     }
 
+    class HashQuestionMain_08_05_06 {
+        public static void main(String[] args) {
+            String[] orders = {"ABCFG", "AC", "CDE", "ACDE", "BCFG", "ACDEH"};
+            int[] course = {2, 3, 4};
+            String[] result = mySolution(orders, course);   // ["AC", "ACDE", "BCFG", "CDE"]
+            if (result != null) {
+                for (String s : result) {
+                    System.out.println("s = " + s);
+                }
+            }
+        }
 
+        private static String[] mySolution(String[] orders, int[] course) {
+            // 가장 많이 함께 주문한 단품 메뉴들을 코스 요리 메뉴로
+            // 최소 2가지 이상의 단품 메뉴로 구성
+            // 최소 2명 이상의 손님으로부터 주문한 단품 메뉴 조합만
+            // 조건 : 배열 내 오름차순 정렬
+            // 1번 손님 : A, B, C, F, G
+            // 2번 손님 : A, C
+            // 3번 손님 : A, C, D, E
+            // 4번 손님 : B, C, F, G
+            // 5번 손님 : A, C, D, E, H
+            // 요리 2개 코스 : A, C
+            // 요리 3개 코스 : C, D, E
+            // 요리 4개 코스 : B, C, F, G
+            // 요리 4개 코스 : A, C, D, E
+            // 결론 : 조합을 써야되네...
+            HashMap<String, Integer> courseCountMap = new HashMap<>();
+
+            for (int i = 0; i < orders.length; i++) {
+                for (int j = 0; j < course.length; j++) {
+                    combine(orders[i].toCharArray(), 0, course[j], new ArrayList<>(), courseCountMap);
+                }
+            }
+
+            System.out.println("courseCountMap = " + courseCountMap);
+            for (Map.Entry<String, Integer> entry : courseCountMap.entrySet()) {
+                int max = 0;
+                for (int j = 0; j < course.length; j++) {
+                    if (entry.getKey().length() == course[j]) {
+                        max = Math.max(max, entry.getValue());
+                    }
+                }
+
+            }
+            int[] cMax = new int[course.length];
+            for (int j = 0; j < course.length; j++) {
+                int max = 0;
+                for (Map.Entry<String, Integer> entry : courseCountMap.entrySet()) {
+                    if (entry.getKey().length() == course[j]) {
+                        max = Math.max(max, entry.getValue());
+                    }
+                }
+                cMax[j] = max;
+            }
+            ArrayList<String> result = new ArrayList<>();
+            for (int j = 0; j < course.length; j++) {
+                for (Map.Entry<String, Integer> entry : courseCountMap.entrySet()) {
+                    if (entry.getKey().length() == course[j] && entry.getValue() == cMax[j]) {
+                        result.add(entry.getKey());
+                    }
+                }
+            }
+//            System.out.println("result = " + result);
+            return result.stream().sorted().toArray(String[]::new);
+        }
+
+        private static void combine(char[] arr, int start, int r, List<Character> combination, HashMap<String, Integer> map) {
+            if (r == 0) {
+                System.out.println(combination);
+                String str = combination.stream().map(String::valueOf).collect(Collectors.joining());
+                map.put(str, map.getOrDefault(str, 0) + 1);
+                return;
+            }
+
+            for (int i = start; i < arr.length; i++) {
+                combination.add(arr[i]);
+                combine(arr, i + 1, r - 1, combination, map);
+                combination.remove(combination.size() - 1);
+            }
+        }
+
+    }
+
+    class Combination {
+        private static ArrayList<String> resultList = new ArrayList<>();
+
+        public static void main(String[] args) {
+            String x = "ABC";
+            combinations(0, x.toCharArray(), "");
+            System.out.println("resultList = " + resultList);
+        }
+
+        public static void combinations(int idx, char[] order, String result) {
+            if (result.length() > 0) {
+                resultList.add(result);
+            }
+
+            for (int i = idx; i < order.length; i++) {
+                combinations(i + 1, order, result + order[i]);
+            }
+        }
+    }
+
+    class HashQuestionMain_08_05_06_2 {
+        public static void main(String[] args) {
+            String[] orders = {"ABCFG", "AC", "CDE", "ACDE", "BCFG", "ACDEH"};
+            int[] course = {2, 3, 4};
+            String[] result = solution(orders, course);   // ["AC", "ACDE", "BCFG", "CDE"]
+            if (result != null) {
+                for (String s : result) {
+                    System.out.println("s = " + s);
+                }
+            }
+        }
+
+        // 만들 수 있는 메뉴 구성과 총 주문 수를 저장할 해시맵
+        private static HashMap<Integer, HashMap<String, Integer>> courseMap;
+
+        private static String[] solution(String[] orders, int[] course) {
+            // 해시맵 초기화
+            courseMap = new HashMap<>();
+            for (int i : course) {
+                courseMap.put(i, new HashMap<>());
+            }
+
+            // 1. 코스를 배열로 만들고 오름차순 정렬해서 가능한 모든 메뉴 구성을 구함
+            for (String order : orders) {
+                char[] orderArray = order.toCharArray();
+                Arrays.sort(orderArray);
+                combinations(0, orderArray, "");
+            }
+
+            ArrayList<String> answer = new ArrayList<>();
+
+            // 2. 모든 코스 후보에 대해서
+            for (HashMap<String, Integer> count : courseMap.values()) {
+                count.values()
+                        .stream()
+                        .max(Comparator.comparingInt(o -> o)) // 3. 가장 빈도수가 높은 코스를 찾음
+                        .ifPresent(cnt -> count.entrySet() // 4. 코스에 대한 메뉴 수가 가능할 때만
+                                .stream() // 5. 최소 2명 이상의 손님으로부터 주문된 단품 메뉴 조합에 대해서만
+                                .filter(entry -> cnt.equals(entry.getValue()) && cnt > 1)
+                                // 6. 코스 메뉴만 answer 리스트에 추가
+                                .forEach(entry -> answer.add(entry.getKey())));
+            }
+            Collections.sort(answer);   // 7. 오름차순으로 정렬
+            return answer.toArray(new String[0]);
+        }
+
+        // 만들 수 있는 모든 조합을 재귀 함수를 이용해서 구현
+        private static void combinations(int idx, char[] order, String result) {
+            // 필요한 코스 메뉴의 수와 일치하는 것만 저장
+            if (courseMap.containsKey(result.length())) {
+                HashMap<String, Integer> map = courseMap.get(result.length());
+                // 해당 코스의 수를 1 증가
+                map.put(result, map.getOrDefault(result, 0) + 1);
+            }
+
+            for (int i = idx; i < order.length; i++) {
+                combinations(i + 1, order, result + order[i]);
+            }
+        }
+
+
+    }
 }
