@@ -4,6 +4,7 @@ import java.util.*;
 
 public interface QueueQuestions {
 
+    // 큐의 개념
     class QueueQuestionMain07_1 {
         public static void main(String[] args) {
             // 큐를 구현한 ArrayDeque 객체 생성
@@ -47,6 +48,7 @@ public interface QueueQuestions {
         }
     }
 
+    // 요세푸스 문제
     class QueueQuestionMain07_2 {
         public static void main(String[] args) {
             int N = 5;
@@ -92,6 +94,7 @@ public interface QueueQuestions {
         }
     }
 
+    // 기능 개발(**)
     class QueueQuestionMain07_3 {
         public static void main(String[] args) {
             int[] progresses = {93, 30, 55};
@@ -175,6 +178,7 @@ public interface QueueQuestions {
         }
     }
 
+    // 카드 뭉치(**)
     class QueueQuestionMain07_4 {
         public static void main(String[] args) {
             String[] cards1 = {"i", "drink", "water"};

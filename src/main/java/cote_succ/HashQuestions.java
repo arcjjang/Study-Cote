@@ -5,6 +5,8 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public interface HashQuestions {
+
+    // 해시의 개념
     class HashQuestionMain_08_02 {
         public static void main(String[] args) {
             // HashMap<KeyType, ValueType>입니다.
@@ -28,6 +30,7 @@ public interface HashQuestions {
         }
     }
 
+    // 두 개의 수로 특정값 만들기(*)
     class HashQuestionMain_08_04_01 {
         public static void main(String[] args) {
             int[] arr = {1, 2, 3, 4, 8};
@@ -77,6 +80,7 @@ public interface HashQuestions {
         }
     }
 
+    // 완주하지 못한 선수(*)
     class HashQuestionMain_08_05_01 {
         public static void main(String[] args) {
             String[] participant = {"leo", "kiki", "eden"};
@@ -120,6 +124,7 @@ public interface HashQuestions {
 
     }
 
+    // 할인 행사(**)
     class HashQuestionMain_08_05_02 {
         public static void main(String[] args) {
             String[] want = {"banana", "apple", "rice", "pork", "pot"};
@@ -197,6 +202,7 @@ public interface HashQuestions {
 
     }
 
+    // 오픈 채팅방
     class HashQuestionMain_08_05_03 {
         public static void main(String[] args) {
             String[] record = {"Enter uid1234 Muzi", "Enter uid4567 Prodo", "Leave uid1234", "Enter uid1234 Prodo", "change uid4567 Ryan"};
@@ -263,6 +269,7 @@ public interface HashQuestions {
 
     }
 
+    // 베스트 앨범(**)
     class HashQuestionMain_08_05_04 {
         public static void main(String[] args) {
             String[] genres = {"classic", "pop", "classic", "classic", "pop"};
@@ -342,6 +349,7 @@ public interface HashQuestions {
         }
     }
 
+    // 신고 결과 받기(**)
     class HashQuestionMain_08_05_05 {
         public static void main(String[] args) {
             String[] id_list = {"muzi", "frodo", "apeach", "neo"};
@@ -446,6 +454,7 @@ public interface HashQuestions {
 
     }
 
+    // 메뉴 리뉴얼(***)
     class HashQuestionMain_08_05_06 {
         public static void main(String[] args) {
             String[] orders = {"ABCFG", "AC", "CDE", "ACDE", "BCFG", "ACDEH"};
@@ -530,6 +539,7 @@ public interface HashQuestions {
 
     }
 
+    // 조합 sample
     class Combination {
         private static ArrayList<String> resultList = new ArrayList<>();
 
@@ -550,6 +560,7 @@ public interface HashQuestions {
         }
     }
 
+    // 메뉴 리뉴얼(***)
     class HashQuestionMain_08_05_06_2 {
         public static void main(String[] args) {
             String[] orders = {"ABCFG", "AC", "CDE", "ACDE", "BCFG", "ACDEH"};
