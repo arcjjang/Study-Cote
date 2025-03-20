@@ -273,5 +273,118 @@ public interface TreeQuestions {
 
     }
 
+    // 길 찾기 게임(****)
+    class TreeQuestionMain_09_05_04 {
+        public static void main(String[] args) {
+            int[][] nodeinfo = {{5, 3}, {11, 5}, {13, 3}, {3, 5}, {6, 1}, {1, 3}, {8, 6}, {7, 2}, {2, 2}};
+            int[][] result = solution(nodeinfo);
+            for (int[] ints : result) {
+                for (int anInt : ints) {
+                    System.out.print(anInt + " ");
+                }
+                System.out.println();
+            }
+            // nodeinfo 좌표값을 가지고 트리를 구현해야 한다.
+            // 무작위 노드 좌표를 다음 기준으로 정렬한다.
+            // 1. y좌표가 크면 무조건 우선순위가 높다.
+            // 2. y좌표가 같다면, x좌표가 적은 게 우선순위가 높다.
+            // 정렬 후 트리 구축
+            // 1. 맨 처음 노드는 무조건 루트 노드이므로 트리에 루트 노드 추가
+            // 2. 루트 노드를 기준으로 하여 자식 노드로 내려감. 내려갈 때 현재 노드의 x좌표보다, 자식 노드의 x좌표가 더 작으면 왼쪽으로,
+            // 아니면 오른쪽으로 감. 이 과정을 자식 노드가 없을 때까지 반복하면서 트리에 해당 노드를 추가
+            // 2 과정을 모든 노드에서 수행
+        }
+
+        // 1. Node 클래스 정의
+        private static class Node {
+            int x, y, num;  // 노드의 자표, 번호 저장
+            Node left, right;   // 노드의 왼쪽, 오른쪽 자식 노드
+
+            public Node(int num, int y, int x) {
+                this.num = num;
+                this.y = y;
+                this.x = x;
+            }
+        }
+
+        // 2. 이진 트리 생성 메서드
+        private static Node makeBT(int[][] nodeinfo) {
+            // 3. 각 노드에 대한 좌표, 번호를 배열에 저장
+            Node[] nodes = new Node[nodeinfo.length];
+            for (int i = 0; i < nodeinfo.length; i++) {
+                nodes[i] = new Node(i + 1, nodeinfo[i][0], nodeinfo[i][1]);
+            }
+
+            // 4. y 기준으로 내림차순 정렬, y가 같다면 x를 기준으로 오름차순 정렬
+            Arrays.sort(nodes, (o1, o2) -> {
+                if (o1.y == o2.y)
+                    return Integer.compare(o1.x, o2.x);
+                return Integer.compare(o1.y, o2.y);
+            });
+
+            Node root = nodes[0];   // 맨 처음 노드는 무조건 루트
+
+            for (int i = 1; i < nodes.length; i++) {
+                Node parent = root;
+                while (true) {
+                    // 5. 부모 노드의 x좌표가 더 크면 왼쪽으로
+                    if (nodes[i].x < parent.x) {
+                        if (parent.left == null) {
+                            parent.left = nodes[i];
+                            break;
+                        } else {
+                            parent = parent.left;
+                        }
+                    } else {    // 6. 부모 노드의 x좌표가 더 작거나 같으면 오른쪽으로
+                        if (parent.right == null) {
+                            parent.right = nodes[i];
+                            break;
+                        } else {
+                            parent = parent.right;
+                        }
+                    }
+                }
+            }
+            return nodes[0];
+        }
+
+        // 7. 전위 순회 메서드
+        private static void preOrder(Node curr, ArrayList<Integer> answer) {
+            if (curr == null) {
+                return;
+            }
+            answer.add(curr.num);
+            preOrder(curr.left, answer);
+            preOrder(curr.right, answer);
+        }
+
+        // 8. 후위 순회 메서드
+        private static void postOrder(Node curr, ArrayList<Integer> answer) {
+            if (curr == null) {
+                return;
+            }
+            postOrder(curr.left, answer);
+            postOrder(curr.right, answer);
+            answer.add(curr.num);
+        }
+
+        private static int[][] solution(int[][] nodeinfo) {
+            Node root = makeBT(nodeinfo);   // 이진 트리 생성
+            ArrayList<Integer> preOrderList = new ArrayList<>();
+            preOrder(root, preOrderList);   // 전위 순회
+            ArrayList<Integer> postOrderList = new ArrayList<>();
+            postOrder(root, postOrderList); // 후위 순외
+
+            // 9. 결과 반환
+            int[][] answer = new int[2][nodeinfo.length];
+            answer[0] = preOrderList.stream().mapToInt(Integer::intValue).toArray();
+            answer[1] = postOrderList.stream().mapToInt(Integer::intValue).toArray();
+
+            return answer;
+        }
+
+    }
+
+
 
 }
