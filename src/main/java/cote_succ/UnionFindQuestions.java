@@ -51,7 +51,7 @@ public interface UnionFindQuestions {
                 return x;
             }
             // 그렇지 않다면 x의 부모를 찾아서 parent[x]에 저장합니다.
-            parent[x] = find(parent[x]);
+            parent[x] = find(parent[x]);    // <-- 경로압축하는 것, 트리를 평평하게 하는 것 (return find(parent[x) 면 부모를 찾기만 하는 것)
             return parent[x];   // 찾은 루트 노드를 반환
         }
 
@@ -211,7 +211,10 @@ public interface UnionFindQuestions {
     // n개의 섬 사이에 다리를 건설하는 비용 costs가 주어질 때 최소 비용으로 모든 섬이 서로 통해하는 solution() 함수를 완성하세요.
     class TreeQuestionMain_10_06 {
         public static void main(String[] args) {
+            int n = 4;
             int[][] costs = {{0, 1, 1}, {0, 2, 2}, {1, 2, 5}, {1, 3, 1}, {2, 3, 8}};
+            int result = solution(n, costs);
+            System.out.println("result = " + result);
         }
 
         // 각 섬의 다리를 건설하는 비용을 오름차순으로 정렬
@@ -237,7 +240,7 @@ public interface UnionFindQuestions {
             parent[root2] = root1;
         }
 
-        public int solution(int n, int[][] costs) {
+        private static int solution(int n, int[][] costs) {
             // 4. 비용을 기준으로 다리를 오름차순 정렬
             Arrays.sort(costs, (o1, o2) -> Integer.compare(o1[2], o2[2]));
 
@@ -267,5 +270,45 @@ public interface UnionFindQuestions {
             }
             return answer;
         }
+
+    }
+
+    class TreeQuestionMain_my_test {
+        public static void main(String[] args) {
+            int n = 4;
+            parent = new int[n];
+            parent[0] = 0;
+            parent[1] = 0;
+            parent[2] = 1;
+            parent[3] = 2;
+
+            int result0 = find(0);
+            System.out.println("result0 = " + result0);
+
+            int result1 = find(1);
+            System.out.println("result1 = " + result1);
+
+            int result2 = find(2);
+            System.out.println("result2 = " + result2);
+
+            int result3 = find(3);
+            System.out.println("result3 = " + result3);
+        }
+
+        private static int[] parent;
+
+        private static int find(int x) {
+            if (parent[x] == x) {
+                return x;
+            }
+            return parent[x] = find(parent[x]);
+        }
+
+        private static void union(int x, int y) {
+            int root1 = find(x);
+            int root2 = find(y);
+            parent[root2] = root1;
+        }
+
     }
 }
