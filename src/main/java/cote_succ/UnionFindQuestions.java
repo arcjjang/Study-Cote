@@ -31,7 +31,7 @@ public interface UnionFindQuestions {
 
     // 몸풀기 문제
     // 간단한 유니온-파인드 알고리즘 구현하기(**)
-    class TreeQuestionMain_10_03 {
+    class UnionFindQuestionMain_10_03 {
         public static void main(String[] args) {
             int k = 3;
             int[][] operations = {{0, 0, 1}, {0, 1, 2}, {1, 1, 2}};
@@ -87,7 +87,7 @@ public interface UnionFindQuestions {
 
     // 합격자가 되는 모의 테스트
     // 폰켓몬(*)
-    class TreeQuestionMain_10_04 {
+    class UnionFindQuestionMain_10_04 {
         public static void main(String[] args) {
             int[] nums = {3, 1, 2, 3};
             int result = mySolution(nums);
@@ -130,7 +130,7 @@ public interface UnionFindQuestions {
     }
 
     // 영어 끝말잇기(*)
-    class TreeQuestionMain_10_05 {
+    class UnionFindQuestionMain_10_05 {
         public static void main(String[] args) {
             int n = 3;
             String[] words = {"tank", "kick", "know", "wheel", "land", "dream", "mother", "robot", "tank"};
@@ -209,7 +209,7 @@ public interface UnionFindQuestions {
 
     // 섬 연결하기(***)
     // n개의 섬 사이에 다리를 건설하는 비용 costs가 주어질 때 최소 비용으로 모든 섬이 서로 통해하는 solution() 함수를 완성하세요.
-    class TreeQuestionMain_10_06 {
+    class UnionFindQuestionMain_10_06 {
         public static void main(String[] args) {
             int n = 4;
             int[][] costs = {{0, 1, 1}, {0, 2, 2}, {1, 2, 5}, {1, 3, 1}, {2, 3, 8}};
@@ -273,7 +273,7 @@ public interface UnionFindQuestions {
 
     }
 
-    class TreeQuestionMain_my_test {
+    class UnionFindQuestionMain_my_test {
         public static void main(String[] args) {
             int n = 4;
             parent = new int[n];
