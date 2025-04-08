@@ -460,6 +460,7 @@ public interface GraphQuestions {
         // 2. 위치 정보(x, y)를 저장할 클래스 생성
         private static class Point {
             int nx, ny;
+
             public Point(int nx, int ny) {
                 this.nx = nx;
                 this.ny = ny;
@@ -509,7 +510,7 @@ public interface GraphQuestions {
             // 7. 너비 우선 탐색 초기 과정
             int[][] dist = new int[N][M];
             ArrayDeque<Point> queue = new ArrayDeque<>();
-            dist[start.ny][start.nx] = 1;
+            dist[start.ny][start.nx] = 1;   // 기본값(0)이면 방문X, 1이상이면 방문O
             queue.add(start);
 
             while (!queue.isEmpty()) {
@@ -539,13 +540,260 @@ public interface GraphQuestions {
 
                     // 14. 도착점에 도달하면 최단 거리를 반환
                     if (nextX == end.nx && nextY == end.ny) {
-                        return dist[end.ny][end.nx] - 1;
+                        return dist[end.ny][end.nx] - 1;    // 여기서 -1을 하는 이유는 시작점도 1로 초기화했기 때문
                     }
                 }
             }
             // 15. 탐색을 종료할 때까지 도착 지점에 도달하지 못했다면 -1 반환
             return -1;
         }
+
+
+    }
+
+    // 배달(***)
+    class GraphQuestions_11_05_04 {
+        public static void main(String[] args) {
+            int[][] roads = {
+                    {1, 2, 1},
+                    {2, 3, 3},
+                    {5, 2, 2},
+                    {1, 4, 2},
+                    {5, 3, 1},
+                    {5, 4, 2},
+            };
+            int N = 5;
+            int K = 3;
+            int result = solution(N, roads, K);
+            System.out.println("result = " + result);   // 4
+
+            int[][] roads2 = {
+                    {1, 2, 1},
+                    {1, 3, 2},
+                    {2, 3, 2},
+                    {3, 4, 3},
+                    {3, 5, 2},
+                    {3, 5, 3},
+                    {5, 6, 1},
+            };
+            int N2 = 6;
+            int K2 = 4;
+            int result2 = solution(N2, roads2, K2);
+            System.out.println("result2 = " + result2);   // 4
+        }
+
+        // 노드(목적지, 코스트)
+        private static class Node {
+            int dest, cost;
+
+            public Node(int dest, int cost) {
+                this.dest = dest;
+                this.cost = cost;
+            }
+        }
+
+        private static int solution(int N, int[][] road, int K) {
+            // 1. 인접 리스트를 저장할 ArrayList 배열 초기화
+            ArrayList<Node>[] adjList = new ArrayList[N + 1];
+            for (int i = 0; i <= N; i++) {
+                adjList[i] = new ArrayList<>();
+            }
+
+            // 2. road 정보를 인접 리스트로 저장
+            for (int[] edge : road) {
+                adjList[edge[0]].add(new Node(edge[1], edge[2]));
+                adjList[edge[1]].add(new Node(edge[0], edge[2]));
+            }
+
+            int[] dist = new int[N + 1];
+            // 3. 모든 노드의 거리 값을 무한대로 초기화
+            Arrays.fill(dist, Integer.MAX_VALUE);
+            // 4. 우선순위 큐를 생성하고 시작 노드를 삽입
+            PriorityQueue<Node> pq = new PriorityQueue<>((o1, o2) -> Integer.compare(o1.cost, o2.cost));
+            pq.add(new Node(1, 0));
+            dist[1] = 0;
+
+            while (!pq.isEmpty()) {
+                Node now = pq.poll();
+
+                if (dist[now.dest] < now.cost)
+                    continue;
+
+                // 5. 인접한 노드들의 최단 거리를 갱신하고 우선순위 큐에 추가
+                for (Node next : adjList[now.dest]) {
+                    if (dist[next.dest] > now.cost + next.cost) {
+                        dist[next.dest] = now.cost + next.cost;
+                        pq.add(new Node(next.dest, dist[next.dest]));
+                    }
+                }
+            }
+
+            int answer = 0;
+            // 6. dist 배열에서 K 이하인 값의 개수를 구하여 반환
+            for (int i = 1; i <= N; i++) {
+                if (dist[i] <= K)
+                    answer++;
+            }
+
+            return answer;
+        }
+
+
+    }
+
+    // 경주로 건설(*****)
+    class GraphQuestions_11_05_05 {
+        public static void main(String[] args) {
+            int[][] board = {
+                    {0, 0, 0},
+                    {0, 0, 0},
+                    {0, 0, 0},
+            };
+            int result = solution(board);
+            System.out.println("result = " + result);
+        }
+
+        private static class Node {
+            int x, y, direction, cost;
+
+            public Node(int x, int y, int direction, int cost) {
+                this.x = x;
+                this.y = y;
+                this.direction = direction;
+                this.cost = cost;
+            }
+        }
+
+        // 순서는 반드시 (0, -1), (-1, 0), (0, 1), (1, 0) 순서로 코너 계산에 필요
+        private static final int[] rx = {0, -1, 0, 1};
+        private static final int[] ry = {-1, 0, 1, 0};
+        private static int N;
+        private static int[][][] visited;
+
+        // 1. 주어진 좌표가 보드의 범위 내에 있는지 확인
+        private static boolean isValid(int x, int y) {
+            return 0 <= x && x < N && 0 <= y && y < N;
+        }
+
+        // 2. 주어진 좌표가 차단되었거나 이동할 수 없는지 확인
+        private static boolean isBlocked(int[][] board, int x, int y) {
+            return (x == 0 && y == 0) || !isValid(x, y) || board[x][y] == 1;
+        }
+
+        // 3. 이전 방향과 현재 방향에 따라 비용 계산
+        private static int calculateCost(int direction, int preDirection, int cost) {
+            if (preDirection == -1 || (preDirection - direction) % 2 == 0)
+                return cost + 100;
+            return cost + 600;
+        }
+
+        // 4. 주어진 좌표와 방향이 아직 방문하지 않았거나 새 비용이 더 작은 경우
+        private static boolean isShouldUpdate(int x, int y, int direction, int newCost) {
+            return visited[x][y][direction] == 0 || visited[x][y][direction] > newCost;
+        }
+
+        public static int solution(int[][] board) {
+            ArrayDeque<Node> queue = new ArrayDeque<>();
+            queue.add(new Node(0, 0, -1 , 0));
+            N = board.length;
+            visited = new int[N][N][4];
+
+            int answer = Integer.MAX_VALUE;
+
+            // 5. 큐가 빌 때까지 반복
+            while (!queue.isEmpty()) {
+                Node now = queue.poll();
+
+                // 6. 가능한 모든 방향에 대해 반복
+                for (int i = 0; i < 4; i++) {
+                    int new_x = now.x + rx[i];
+                    int new_y = now.y + ry[i];
+
+                    // 7. 이동할 수 없는 좌표는 건너뛰기
+                    if (isBlocked(board, new_x, new_y)) {
+                        continue;
+                    }
+
+                    int new_cost = calculateCost(i, now.direction, now.cost);
+
+                    // 8. 도착지에 도달할 경우 최소 비용 업데이트
+                    if (new_x == N - 1 && new_y == N - 1) {
+                        answer = Math.min(answer, new_cost);
+                    } else if (isShouldUpdate(new_x, new_y, i, new_cost)) { // 9. 좌표와 방향이 아직 방문하지 않았거나 새 비용이 더 작은 경우 큐에 추가
+                        queue.add(new Node(new_x, new_y, i, new_cost));
+                        visited[new_x][new_y][i] = new_cost;
+                    }
+                }
+            }
+            return answer;
+        }
+
+    }
+
+    // 전력망을 둘로 나누기(**)
+    class GraphQuestions_11_05_06 {
+        public static void main(String[] args) {
+            int n = 9;
+            int[][] wires = {
+                    {1, 3},
+                    {2, 3},
+                    {3, 4},
+                    {4, 5},
+                    {4, 6},
+                    {4, 7},
+                    {7, 8},
+                    {7, 9}
+            };
+            int result = solution(n, wires);
+            System.out.println("result = " + result);
+        }
+
+        private static boolean[] visited;
+        private static ArrayList<Integer>[] adjList;
+        private static int N, answer;
+
+        public static int solution(int n, int[][] wires) {
+            N = n;
+            answer = n - 1;
+
+            // 1. 전선의 연결 정보를 저장할 인접 리스트 초기화
+            adjList = new ArrayList[n + 1];
+            for (int i = 0; i <= n; i++) {
+                adjList[i] = new ArrayList<>();
+            }
+
+            // 2. 전선의 연결 정보를 인접 리스트에 저장
+            for (int[] wire : wires) {
+                adjList[wire[0]].add(wire[1]);
+                adjList[wire[1]].add(wire[0]);
+            }
+
+            visited = new boolean[n + 1];
+            // 3. 깊이 우선 탐색 시작
+            dfs(1);
+            return answer;
+        }
+
+        private static int dfs(int now) {
+            visited[now] = true;
+
+            // 4. 자식 노드의 수를 저장하고 반환할 변수 선언
+            int sum = 0;
+            // 5. 연결된 모든 전선을 확인
+            for (int next : adjList[now]) {
+                if (!visited[next]) {
+                    // 6. (전체 노드 - 자식 트리의 노드 수) - (자식 트리의 노드 수) 의 절대값이 가장 작은 값을 구함
+                    int cnt = dfs(next);    // 자식 트리가 가진 노드의 수
+                    answer = Math.min(answer, Math.abs(N - cnt * 2));
+                    // 7. 자식 노드의 수를 더함
+                    sum += cnt;
+                }
+            }
+
+            // 8. 전체 자식의 노드의 수에 1(현재 now 노드)을 더해서 반환
+            return sum + 1;
+        }
+
 
 
     }
