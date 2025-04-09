@@ -36,6 +36,8 @@ public interface StackQuestions {
     }
   }
 
+  // 몸풀기 문제
+  // 올바른 괄호(**)
   class StackQuestionMain06_3_8 {
     public static void main(String[] args) {
       String s1 = "()()";
@@ -76,7 +78,7 @@ public interface StackQuestions {
         if (c == '(') {
           stack.push(c);
         } else {
-          if (stack.isEmpty() || stack.pop() == c) {
+          if (stack.isEmpty() || stack.pop() == c) {  // 1. 스택이 비어 있는지 먼저 검사
             return false;
           }
         }
@@ -88,6 +90,7 @@ public interface StackQuestions {
 
   }
 
+  // 10진수를 2진수로 변환하기(*)
   class StackQuestionMain06_3_9 {
     public static void main(String[] args) {
       // 10 -> 1010
@@ -138,6 +141,7 @@ public interface StackQuestions {
 
   }
 
+  // 괄호 회전하기(*)
   class StackQuestionMain06_3_10 {
     public static void main(String[] args) {
       String s1 = "[](){}";
@@ -254,6 +258,7 @@ public interface StackQuestions {
     }
   }
 
+  // 짝지어 제거하기(*)
   class StackQuestionMain06_3_11 {
     public static void main(String[] args) {
       String s = "baabaa";
@@ -297,6 +302,8 @@ public interface StackQuestions {
     }
 
   }
+
+  // 주식 가격(**)
 
   class StackQuestionMain06_3_13 {
     public static void main(String[] args) {

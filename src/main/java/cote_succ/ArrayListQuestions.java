@@ -5,6 +5,95 @@ import java.util.stream.Collectors;
 
 public interface ArrayListQuestions {
 
+    class ArrayListQuestionMain_05_1 {
+        public static void main(String[] args) {
+            int[] arr1 = {0, 0, 0, 0, 0, 0};
+            int[] arr2 = new int[6];
+            int[][] arr3 = {{1, 2, 3}, {4, 5, 6}};
+            System.out.println("arr3[1][2] = " + arr3[1][2]);
+            arr3[1][2] = 7;
+            System.out.println("arr3[1][2] = " + arr3[1][2]);
+        }
+    }
+
+    class ArrayListQuestionMain_05_2 {
+        public static void main(String[] args) {
+            ArrayList<Integer> list = new ArrayList<>();
+            // 리스트의 맨 끝에 데이터 추가
+            list.add(1);    // [1]
+            list.add(2);    // [1, 2]
+            list.add(3);    // [1, 2, 3]
+
+            // 다른 컬렉션의 데이터로부터 초기화
+            ArrayList<Integer> list2 = new ArrayList<>(list);
+            System.out.println("list2 = " + list2);
+
+            // get() 메서드로 인덱스를 통해 데이터에 접근
+            System.out.println(list.get(1));    // 2
+
+            // remove() 메서드로 데이터 삭제
+            list.remove(list.size() - 1);   // 끝에 있는 데이터 삭제
+            System.out.println("list = " + list);   // [1, 2]
+
+            int[] arr ={1, 2, 3, 4, 5};
+            // 배열의 전체 데이터 개수를 가진 length 변수
+            System.out.println("arr.length = " + arr.length);   // 5
+            // 배열의 모든 데이터를 정렬하는 Arrays 클래스의 sort() 메서드
+            Arrays.sort(arr);
+            // 배열의 모든 데이터를 String으로 반환하는 Arrays 클래스의 toString()메서드
+            System.out.println("arr = " + Arrays.toString(arr));
+
+            ArrayList<Integer> list3 = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5));
+            // ArrayList의 전체 데이터 개수를 반환하는 size() 메서드
+            System.out.println("list3.size() = " + list3.size()); // 5
+            // ArrayList의 저장된 데이터가 없는지 여부를 반환하는 isEmpty() 메서드
+            System.out.println("list3.isEmpty() = " + list3.isEmpty());   // false
+            // ArrayList의 모든 데이터를 정렬하는 Collections 클래스의 sort() 메서드
+            Collections.sort(list3);    // 정렬
+            System.out.println("list3 = " + list3); // 출력
+        }
+    }
+
+    class ArrayListQuestionMain_05_4_01 {
+        public static void main(String[] args) {
+            int[] org = {4, 2, 3, 1, 5};
+            int[] sorted = solution(org);
+//            int[] sorted = solutionNoClone(org);
+            System.out.println("Arrays.toString(org) = " + Arrays.toString(org));
+            System.out.println("Arrays.toString(sorted) = " + Arrays.toString(sorted));
+        }
+
+        private static int[] solution(int[] arr) {
+            int[] clone = arr.clone();
+            Arrays.sort(clone);;
+            return clone;
+        }
+
+        private static int[] solutionNoClone(int[] arr) {
+            int[] clone = arr;
+            Arrays.sort(clone);
+            return clone;
+        }
+    }
+
+    class ArrayListQuestionMain_05_4_02 {
+        public static void main(String[] args) {
+            int[] arr = {4, 2, 2, 1, 3, 4};
+            int[] result = solution(arr);
+            System.out.println("result = " + Arrays.toString(result));
+        }
+
+        private static int[] solution(int[] arr) {
+            // 1. 중복값 제거
+            Integer[] result = Arrays.stream(arr).boxed().distinct().toArray(Integer[]::new);
+            Arrays.sort(result, Collections.reverseOrder());    // 2. 내림차순 정렬
+            // int형 배열로 변경 후 반환
+            return Arrays.stream(result).mapToInt(Integer::intValue).toArray();
+        }
+    }
+
+    // 합격자가 되는 모의 테스트
+    // 두 개 뽑아서 더하기(*)
     class ArrayListQuestionMain_05_5_03 {
         public static void main(String[] args) {
             int[] result1 = solution(new int[]{2, 1, 3, 4, 1});
@@ -24,6 +113,7 @@ public interface ArrayListQuestions {
         }
     }
 
+    // 모의고사(*)
     class ArrayListQuestionMain_05_5_04 {
         public static void main(String[] args) {
             int[] result1 = solution(new int[]{1, 2, 3, 4, 5});
@@ -132,6 +222,7 @@ public interface ArrayListQuestions {
 
     }
 
+    // 행렬의 곱셈(*)
     class ArrayListQuestionMain_05_5_05 {
         public static void main(String[] args) {
             int[][] arr1 = {
@@ -184,7 +275,7 @@ public interface ArrayListQuestions {
             int c2 = arr2[0].length;
 
             // 2. 결과를 저장할 2차원 배열 초기화
-            int[][] answer = new int[r1][c1];
+            int[][] answer = new int[r1][c2];
 
             // 3. 첫 번째 행렬 arr1의 각 행과 두 번째 행렬 arr2의 각 열에 대해
             for (int i = 0; i < r1; i++) {
@@ -199,6 +290,7 @@ public interface ArrayListQuestions {
         }
     }
 
+    // 실패율(**)
     class ArrayListQuestionMain_05_5_06 {
         public static void main(String[] args) {
             int[] n1 = {2, 1, 2, 6, 2, 4, 3, 3};
@@ -279,6 +371,7 @@ public interface ArrayListQuestions {
 
     }
 
+    // 방문 길이(**)
     class ArrayListQuestionMain_05_5_07 {
         public static void main(String[] args) {
             // 문제 07 방문 길이
@@ -291,76 +384,6 @@ public interface ArrayListQuestions {
             String dirs3 = "L";
             int result3 = solution(dirs3);
             System.out.println("result3 = " + result3);
-        }
-
-        private static int mySolutionFail(String dirs) {
-            // 2차원 배열로 판을 구성
-            // 이동할 때마다 현재 위치를 기록
-            // 이동할 때마다 경계를 넘어가는지 체크
-            // 이동할 때마다 이동한 길 기록
-            // true인 개수 출력
-            // -5_-5_-5_-4
-            // -5_-5_-4_-5
-            HashMap<String, Boolean> map = new HashMap<>();
-            for (int x = -5; x <= 5; x++) {
-                for (int y = -5; y <= 5; y++) {
-                    if (y + 1 < 6) {
-                        if (!map.containsKey(x + "_" + (y + 1) + "_" + x + "_" + y)) {
-                            map.put(x + "_" + y + "_" + x + "_" + (y + 1), false);
-                        }
-                    }
-                    if (x + 1 < 6) {
-                        if (!map.containsKey((x + 1) + "_" + y + "_" + x + "_" + y)) {
-                            map.put(x + "_" + y + "_" + (x + 1) + "_" + y, false);
-                        }
-                    }
-                    if (y - 1 > -6) {
-                        if (!map.containsKey(x + "_" + (y - 1) + "_" + x + "_" + y)) {
-                            map.put(x + "_" + y + "_" + x + "_" + (y - 1), false);
-                        }
-                    }
-                    if (x - 1 > -6) {
-                        if (!map.containsKey((x - 1) + "_" + y + "_" + x + "_" + y)) {
-                            map.put(x + "_" + y + "_" + (x - 1) + "_" + y, false);
-                        }
-                    }
-                }
-            }
-            System.out.println("map = " + map);
-            int startX = 0, startY = 0;
-            String key1 = "", key2 = "";
-            char[] chars = dirs.toCharArray();
-            for (char cha : chars) {
-                switch (cha) {
-                    case 'L':
-                        key1 = (startX - 1) + "_" + startY + "_" + startX + "_" + startY;
-                        key2 = startX + "_" + startY + "_" + (startX - 1) + "_" + startY;
-                        startX -= 1;
-                        break;
-                    case 'R':
-                        key1 = (startX + 1) + "_" + startY + "_" + startX + "_" + startY;
-                        key2 = startX + "_" + startY + "_" + (startX + 1) + "_" + startY;
-                        startX += 1;
-                        break;
-                    case 'U':
-                        key1 = startX + "_" + startY + "_" + startX + "_" + (startY + 1);
-                        key2 = startX + "_" + (startY + 1) + "_" + startX + "_" + startY;
-                        startY += 1;
-                        break;
-                    case 'D':
-                        key1 = startX + "_" + startY + "_" + startX + "_" + (startY - 1);
-                        key2 = startX + "_" + (startY - 1) + "_" + startX + "_" + startY;
-                        startY -= 1;
-                        break;
-                }
-                if (map.containsKey(key1)) {
-                    map.put(key1, true);
-                }
-                if (map.containsKey(key2)) {
-                    map.put(key2, true);
-                }
-            }
-            return (int) map.entrySet().stream().filter(Map.Entry::getValue).count();
         }
 
         private static int mySolution(String dirs) {
@@ -406,6 +429,21 @@ public interface ArrayListQuestions {
             return set.size();
         }
 
+        // 1. 좌표평면을 벗어나는지 체크하는 메서드 (해당 메서드는 좌표 문제에 단골로 등장)
+        private static boolean isValidMove(int nx, int ny) {
+            return 0 <= nx && nx < 11 && 0 <= ny && ny < 11;
+        }
+
+        // 2. 다음 좌표 결정을 위한 해시맵 생성
+        private static final HashMap<Character, int[]> location = new HashMap<>();
+
+        private static void initLocation() {
+            location.put('U', new int[]{0, 1});
+            location.put('D', new int[]{0, -1});
+            location.put('L', new int[]{-1, 0});
+            location.put('R', new int[]{1, 0});
+        }
+
         private static int solution(String dirs) {
             initLocation();
             int x = 5, y = 5;
@@ -424,22 +462,7 @@ public interface ArrayListQuestions {
                 x = nx;
                 y = ny;
             }
-            return answer.size() / 2;
-        }
-
-        // 2. 다음 좌표 결정을 위한 해시맵 생성
-        private static final HashMap<Character, int[]> location = new HashMap<>();
-
-        private static void initLocation() {
-            location.put('U', new int[]{0, 1});
-            location.put('D', new int[]{0, -1});
-            location.put('L', new int[]{-1, 0});
-            location.put('R', new int[]{1, 0});
-        }
-
-        // 1. 좌표평면을 벗어나는지 체크하는 메서드 (해당 메서드는 좌표 문제에 단골로 등장)
-        private static boolean isValidMove(int nx, int ny) {
-            return 0 <= nx && nx < 11 && 0 <= ny && ny < 11;
+            return answer.size() / 2;   // A->B와 B-A는 같은 경로 취급하므로 2로 나눔
         }
 
 
