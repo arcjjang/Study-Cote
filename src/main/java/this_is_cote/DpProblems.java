@@ -1,8 +1,8 @@
 package this_is_cote;
 
-import java.util.*;
+import java.util.Arrays;
 
-public interface DpDpProblems {
+public interface DpProblems {
     // 31. 금광
     class DpProblems16_31 {
         public static void main(String[] args) {
@@ -80,43 +80,52 @@ public interface DpDpProblems {
         }
     }
 
-    // 33. 퇴사
-
-    // 34. 병사 배치하기
-    class DpProblems16_34 {
+    // 33.퇴사
+    class DpProblemsMain16_33 {
         public static void main(String[] args) {
-            int[] power = {15, 11, 4, 8, 5, 2, 4};
-            System.out.println("result: " + solution(power)); // 결과: 2
+            int N = 7;
+            int[] T = {0, 3, 5, 1, 1, 2, 4, 2};
+            int[] P = {0, 10, 20, 10, 20, 15, 40, 200};
+            int result = solution2(N, T, P);
+            System.out.println("result = " + result);   // 45
         }
 
-        private static int solution(int[] power) {
-            int n = power.length;
+        // 앞에서 풀기
+        public static int solution2(int N, int[] T, int[] P) {
+            int[] dp = new int[N + 2]; // N+1일까지 필요
 
-            // 병사의 전투력 배열을 뒤집음
-            int[] reversedPower = new int[n];
-            for (int i = 0; i < n; i++) {
-                reversedPower[i] = power[n - i - 1];
-            }
+            for (int i = 1; i <= N; i++) {
+                // 오늘 일을 안 하고 넘어가는 경우
+                dp[i + 1] = Math.max(dp[i + 1], dp[i]);
 
-            // dp[i]: i번째 병사를 포함했을 때 최장 증가 부분 수열의 길이
-            int[] dp = new int[n];
-            for (int i = 0; i < n; i++) {
-                dp[i] = 1; // 모든 병사에 대해 최소 LIS는 1
-                for (int j = 0; j < i; j++) {
-                    if (reversedPower[j] < reversedPower[i]) {
-                        dp[i] = Math.max(dp[i], dp[j] + 1); // 이전 LIS 길이를 활용
-                    }
+                // 오늘 일을 하는 경우 (끝나는 날 수익 반영)
+                int endDay = i + T[i];
+                if (endDay <= N + 1) {
+                    dp[endDay] = Math.max(dp[endDay], dp[i] + P[i]);
                 }
+                System.out.println("i = " + i + ", endDay = " + endDay);
+                System.out.println("dp : " + Arrays.toString(dp));
             }
 
-            // LIS의 최대 길이 계산
-            int lisLength = 0;
-            for (int i = 0; i < n; i++) {
-                lisLength = Math.max(lisLength, dp[i]);
-            }
+            return dp[N + 1]; // 퇴사일(N+1일)에 얻을 수 있는 최대 수익
+        }
 
-            // 최소 제외 병사 수 = 전체 병사 수 - LIS 길이
-            return n - lisLength;
+        // 뒤에서 풀기
+        public static int solution(int N, int[] T, int[] P) {
+            int[] dp = new int[N + 2];
+            for (int i = N; i >= 1; i--) {
+                int nextDay = i + T[i];
+                // 상담 가능한 경우
+                if (nextDay <= N + 1) {
+                    dp[i] = Math.max(P[i] + dp[nextDay], dp[i + 1]);    // max((지금 상담하고 보상 + 이후 최댓값), (지금 스킵하고 다음날 최댓값))
+                } else {
+                    // 상담 불가능한 경우
+                    dp[i] = dp[i + 1];  // 다음 날부터 최대로 벌 수 있는 금액
+                }
+                System.out.println("i = " + i + ", nextDay = " + nextDay);
+                System.out.println("dp : " + Arrays.toString(dp));
+            }
+            return dp[1];
         }
     }
 
@@ -204,4 +213,3 @@ public interface DpDpProblems {
         }
     }
 }
-
