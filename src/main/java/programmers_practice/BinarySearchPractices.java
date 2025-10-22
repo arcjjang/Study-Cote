@@ -29,7 +29,7 @@ public interface BinarySearchPractices {
             answer = hi;
 
             while (lo <= hi) {
-                long mid = lo + (hi - lo) / 2;
+                long mid = (lo + hi) / 2;
                 long processed = 0;
                 for (int t : times) {
                     processed += mid / t;
@@ -47,6 +47,7 @@ public interface BinarySearchPractices {
         }
     }
 
+    // 징검다리
     class BinarySearch02 {
         public static void main(String[] args) {
             BinarySearch02 main = new BinarySearch02();
@@ -64,7 +65,8 @@ public interface BinarySearchPractices {
             int lo = 1, hi = distance;
 
             while (lo <= hi) {
-                int mid = lo + ((hi - lo) >>> 1); // 후보 '최소거리'
+//                int mid = lo + ((hi - lo) >>> 1); // 후보 '최소거리' <-- 덧셈 오버플로우 예방
+                int mid = (lo + hi) / 2;
                 if (ok(mid, distance, rocks, n)) {
                     // mid 거리 확보 가능 → 더 크게 갈 수 있는지 시도
                     answer = mid;
